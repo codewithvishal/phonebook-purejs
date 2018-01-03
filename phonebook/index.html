@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>PhoneBook</title>
+	<link href="css/stylesheet.css" rel="stylesheet" type="text/css"/>
+	<script src="js/jquery-3.2.1.js" type="text/javascript"></script>
+  
+	  <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+  $( function() {
+    $( "#tabs" ).tabs();
+  } );
+  </script>
+</head>
+<body>
+	<div class="container">
+		<header>
+			<div id="header">
+				<h1>Phone Book</h1>
+			</div>
+		</header>
+		<div class="clear"></div>
+	<div id="tabs">
+  <ul>
+    <li><a href="#tabs-1">Home</a></li>
+    <li><a href="#tabs-2">Search</a></li>
+    <li><a href="#tabs-3">About</a></li>
+  </ul>
+  <div id="tabs-1">
+    <!-- form -->
+		<div class="form">
+			<form>
+				<input type="text" name="name" id="name" class="fn" placeholder="Name...." />
+				<input type="text" name="phone" id="phone" class="fn" placeholder="Phone...." />
+				<input type="button" value="Add!" class="add-btn" onclick="validateForm()" />
+			</form>
+		</div>
+		<!-- form ended -->
+		<div class="row"></div>
+		<article>
+			<table id="table">
+				<thead>
+					<tr>
+						<th>SR NO.</th>
+						<th>Name</th>
+						<th>Number</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody id="tbody">
+				</tbody>
+			</table>
+		</article>
+  </div>
+  <div id="tabs-2">
+    <div id="search">
+        <input type="text" name="query" id="query"/><input type="submit" value="Search!" id="btnclick"/>
+    </div><br/>
+    <div id='result'></div>
+  </div>
+  <div id="tabs-3">
+      <p>Project URL: <a href="https://github.com/vishalchopra13/phonebook-purejs" target="_blank">https://github.com/vishalchopra13/phonebook-purejs</a></p>
+      <hr/>
+      <p>Developer Details:</p>
+      <p>Name - Vishal Chopra</p>
+      <p>Site - <a href='http://vishalchopra.me' target="_blank">vishalchopra.me</a></p>
+      <p>Blogs - <a href='http://www.bloggerseolab.com'>Bloggerseolab</a> | <a href="http://www.allgeekguide.com">Allgeekguide</a></p>
+      <p>Email - hello[at]vishalchopra.me</p>
+      <hr/>
+      <p>Hosting Details: Site is hosted on Blogger, <a href="http://www.bloggerseolab.com/2018/01/host-single-page-javascript-app-blogger-free.html" target="_blank">learn more here</a></p>
+  </div>
+</div>
+</div>
+ <footer>
+     <p>App is developed by <a title="Vishal Chopra" href='http://vishalchopra.me' target="_blank">Vishal Chopra</a> | Hosting <a title="Learn how to develop and host this app on Blogger" href='http://www.bloggerseolab.com/2018/01/host-single-page-javascript-app-blogger-free.html' target="_blank">Blogger</a></p>
+</footer>
+		<script src="js/module.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			function _id(id){
+				return document.getElementById(id);
+			}
+
+			// validate form 
+			function validateForm(){
+				var name = _id('name').value;
+				var phone = _id('phone').value;
+
+				if(name === 'undefined' && name === null && phone === 'undefined' && name === null){
+					alert('form is empty, fill up plz!');
+					return;
+				} else if(name === ''){
+					alert('name is empty');
+					return;
+				} else if(phone === ''){
+					alert('phone is empty, pz fill up!');
+					return;
+				}
+
+				if(_id('checkbox').checked === true){
+					updateContacts();
+					return;
+				} 
+
+				addToContact();
+			}
+			
+			function addToContact(){
+				var name = _id('name').value;
+				var phone = _id('phone').value;
+				phoneBooks.createContact(name, phone);
+                // add database
+				displayData();
+			}
+		
+
+			function displayData(){
+				var counter = 0;
+				var html = '';
+				var data = phoneBooks.display();
+				for(var i in data){
+					html += "<tr>";
+					html += "<td>"+ counter++ +"</td>";
+					html += "<td>"+data[i].name+"</td>";
+					html += "<td>"+data[i].phone+"</td>";
+					html += "<td><button id='delme' class='btn btn-danger' data-id='" + data[i].phone + "'>Delete</button></td>";
+					html += "</tr>";
+				}
+
+				_id('tbody').innerHTML = html;
+			}
+			displayData();
+
+			$('#table').on('click', '#delme', function(e){
+				var attr = $(this).attr('data-id');
+				phoneBooks.delete(attr);
+				displayData();
+			});
+
+			$(document).ready(function(){
+				$('#btnclick').click(function(){
+					var query = $('#query').val();
+					var result = phoneBooks.search(query);
+					if(Array.isArray(result) === true){
+						var html = "<table><tr>";
+						html += "<td>" + result[0] + "</td>";
+						html += "<td>" + result[1] + "</td>";
+						html += "</tr></table>";
+						$('#result').html(html);
+					} else {
+						$('#result').html(result);
+					}
+				})
+			});
+			
+		</script>
+</body>
+</html>
