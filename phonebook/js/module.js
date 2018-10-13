@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////
 //                                                   //
 //  Developed by: Vishal Chopra                      //
-//  Website: vishalchopra.me                         //
+//  Website: vishalchopra.in                         //
 //  Github: http://github.com/vishalchopra13         //
 //  Facebook: http://www.facebook.com/vishalchopra13 //
 //  Twitter: http://twitter.com/vishalchopra13       //
